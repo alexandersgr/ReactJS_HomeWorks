@@ -187,11 +187,12 @@
                 });
         });
 
-        promiseArray.push(promise);
-        promiseArray[i - 1].then(
-            result => resultTextarea.value += result.id + " " + result.name + "\n", //resultArray.push(result),
+        promise.then(
+            result => resultTextarea.value += result.id + " " + result.name + "\n",
             error => console.log(error)
         );
+        
+        promiseArray.push(promise);
     }
 
 </script>
