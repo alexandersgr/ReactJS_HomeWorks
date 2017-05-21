@@ -7,6 +7,15 @@
 
 <body>
 
+<button onclick="console.log(form1.askUser());">Задание 4</button>
+<br><br>
+Результаты запросов из пятого задания:<br>
+<textarea id="res5" rows="11" cols="60"></textarea>
+
+<script src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+
 <script>
 
     "use strict";
@@ -137,14 +146,14 @@
      * */
 
     class Form {
-        constructor (name = "", age = 0, dateOfBirth = "") {
+        constructor(name = "", age = 0, dateOfBirth = "") {
             this.name = name;
             this.age = age;
             this.dateOfBirth = dateOfBirth;
         }
 
-        askUser(){
-            for (let key in this){
+        askUser() {
+            for (let key in this) {
                 this[key] = prompt("Введите " + key, 0);
             }
             return this;
@@ -152,7 +161,7 @@
     }
 
     let form1 = new Form();
-    console.log(form1.askUser());
+    //console.log(form1.askUser());  // это висит на кнопке
 
     /**
      * 5*. Написать цикл, который создаёт массив промисов, внутри каждого промиса происходит обращение к ресурсу
@@ -161,7 +170,29 @@
      * и далее вывести массив загруженных данных
      * */
 
+    let promiseArray = [];
+    let resultTextarea = document.getElementById("res5");
+    let number = 10;
 
+    for (let i = 1; i <= number; i++) {
+        let promise = new Promise((resolve, reject) => {
+            $.ajax({
+                url: "https://jsonplaceholder.typicode.com/users/" + i,
+            })
+                .done(function (data) {
+                    resolve(data);
+                })
+                .fail(function () {
+                    reject("Request #" + i + " failed")
+                });
+        });
+
+        promiseArray.push(promise);
+        promiseArray[i - 1].then(
+            result => resultTextarea.value += result.id + " " + result.name + "\n", //resultArray.push(result),
+            error => console.log(error)
+        );
+    }
 
 </script>
 
